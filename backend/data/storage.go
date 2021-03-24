@@ -10,4 +10,3 @@ var user string = os.Getenv("STORAGE_USER")
 var password string = os.Getenv("STORAGE_PASSWORD")
 var dbname string = os.Getenv("STORAGE_DB_NAME")
 
-
