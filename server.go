@@ -16,7 +16,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	data.Connect()
+	data.GetDatabaseSingleton()
 	http.HandleFunc("/", exampleHandler)
 	http.HandleFunc("/hello", helloHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
