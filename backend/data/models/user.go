@@ -23,8 +23,19 @@ const INITIALIZE_USER_TABLE_QUERY = `
 func InsertUser(db *sql.DB, user User) (err error) {
 	sqlStatement := `
 	INSERT INTO $1 (name, age, email)
-	VALUES ($2, $3, $4)`
+	VALUES ($2, $3, $4);`
 	_, err = db.Exec(sqlStatement, TABLE_NAME, user.name, user.age, user.email)
+	return err
+}
+
+func UpdateUser(db *sql.DB, user User) (err error) {
+	sqlStatement := `
+	UPDATE $1 SET
+	name = $1,
+	age = $2,
+	email = $3,
+	WHERE id = $4;`
+	_, err = db.Exec(sqlStatement, TABLE_NAME, user.name, user.age, user.email, user.id)
 	return err
 }
 
@@ -33,7 +44,7 @@ func DeleteUser(db *sql.DB, user User) (err error) {
 	DELETE FROM $1 WHERE
 	name = $1 AND
 	age = $1 AND
-	email = $3`
+	email = $3;`
 	_, err = db.Exec(sqlStatement, TABLE_NAME, user.name, user.age, user.email)
 	return err
 }
@@ -41,14 +52,12 @@ func DeleteUser(db *sql.DB, user User) (err error) {
 func GetUser(db *sql.DB, email string) (User, error) {
 	sqlStatement := `
 	SELECT * FROM $1 WHERE
-	email = $1`
+	email = $1;`
 	row := db.QueryRow(sqlStatement, TABLE_NAME, email)
-	var id string
-	var name string
-	var age int
-	switch err := row.Scan(&id, &name, &age); err {
+	var user User
+	switch err := row.Scan(&user.id, &user.name, &user.age); err {
 	case nil:
-		return User{id: id, name: name, age: age, email: email}, nil
+		return user, nil
 	default:
 		return User{}, err
 	}
