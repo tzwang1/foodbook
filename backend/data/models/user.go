@@ -18,7 +18,7 @@ const INITIALIZE_USER_TABLE_QUERY = `
 	id serial PRIMARY KEY,
 	name text NOT NULL,
 	age integer
-	email integer)`
+	email integer UNIQUE)`
 
 func InsertUser(db *sql.DB, user User) (err error) {
 	sqlStatement := `
@@ -36,4 +36,20 @@ func DeleteUser(db *sql.DB, user User) (err error) {
 	email = $3`
 	_, err = db.Exec(sqlStatement, TABLE_NAME, user.name, user.age, user.email)
 	return err
+}
+
+func GetUser(db *sql.DB, email string) (User, error) {
+	sqlStatement := `
+	SELECT * FROM $1 WHERE
+	email = $1`
+	row := db.QueryRow(sqlStatement, TABLE_NAME, email)
+	var id string
+	var name string
+	var age int
+	switch err := row.Scan(&id, &name, &age); err {
+	case nil:
+		return User{id: id, name: name, age: age, email: email}, nil
+	default:
+		return User{}, err
+	}
 }
