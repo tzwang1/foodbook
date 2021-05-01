@@ -9,12 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var testUser = &User{
-	id:    "1",
-	name:  "testName",
-	age:   5,
-	email: "testemail@mail.com"}
-
 func newMock() (*sql.DB, sqlmock.Sqlmock) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -39,5 +33,14 @@ func TestUpdateUser(t *testing.T) {
 	mock.ExpectExec("UPDATE").WithArgs(USER_TABLE_NAME, user.name, user.age, user.email, user.id).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := UpdateUser(db, user)
+	assert.NoError(t, err)
+}
+
+func TestDeleteUser(t *testing.T) {
+	db, mock := newMock()
+	user := User{id: "testid", name: "testName", age: 1, email: "test@mail.com"}
+	mock.ExpectExec("DELETE FROM").WithArgs(USER_TABLE_NAME, user.name, user.age, user.email).WillReturnResult(sqlmock.NewResult(1, 1))
+
+	err := DeleteUser(db, user)
 	assert.NoError(t, err)
 }
