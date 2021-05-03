@@ -18,14 +18,14 @@ var password string = os.Getenv("POSTGRES_PASSWORD")
 var dbname string = os.Getenv("POSTGRES_DB")
 
 type Database struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 var instance *Database
 
 func GetDatabaseSingleton() *Database {
 	if instance == nil {
-		instance = &Database{db: initializeDatabase()}
+		instance = &Database{Db: initializeDatabase()}
 	}
 	return instance
 }

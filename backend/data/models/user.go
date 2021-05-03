@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-	id    string
-	name  string
-	age   int
-	email string
+	Id    string
+	Name  string
+	Age   int
+	Email string
 }
 
 const USER_TABLE_NAME = "users"
@@ -24,7 +24,7 @@ func InsertUser(db *sql.DB, user User) (err error) {
 	sqlStatement := `
 	INSERT INTO $1 (name, age, email)
 	VALUES ($2, $3, $4);`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.name, user.age, user.email)
+	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email)
 	return err
 }
 
@@ -35,7 +35,7 @@ func UpdateUser(db *sql.DB, user User) (err error) {
 	age = $2,
 	email = $3,
 	WHERE id = $4;`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.name, user.age, user.email, user.id)
+	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email, user.Id)
 	return err
 }
 
@@ -45,7 +45,7 @@ func DeleteUser(db *sql.DB, user User) (err error) {
 	name = $1 AND
 	age = $1 AND
 	email = $3;`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.name, user.age, user.email)
+	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email)
 	return err
 }
 
@@ -55,7 +55,7 @@ func GetUser(db *sql.DB, email string) (User, error) {
 	email = $1;`
 	row := db.QueryRow(sqlStatement, USER_TABLE_NAME, email)
 	var user User
-	switch err := row.Scan(&user.id, &user.name, &user.age); err {
+	switch err := row.Scan(&user.Id, &user.Name, &user.Age); err {
 	case nil:
 		return user, nil
 	default:
