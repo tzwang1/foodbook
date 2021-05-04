@@ -14,17 +14,15 @@ type User struct {
 const USER_TABLE_NAME = "users"
 
 const INITIALIZE_USER_TABLE_QUERY = `
-	CREATE TABLE IF NOT EXISTS` + USER_TABLE_NAME + ` (
+	CREATE TABLE IF NOT EXISTS ` + USER_TABLE_NAME + ` (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
-	age integer
-	email integer UNIQUE)`
+	age integer,
+	email text UNIQUE)`
 
 func InsertUser(db *sql.DB, user User) (err error) {
-	sqlStatement := `
-	INSERT INTO $1 (name, age, email)
-	VALUES ($2, $3, $4);`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email)
+	sqlStatement := `INSERT INTO users(name, age, email) VALUES ($1, $2, $3);`
+	_, err = db.Exec(sqlStatement, user.Name, user.Age, user.Email)
 	return err
 }
 
@@ -51,11 +49,10 @@ func DeleteUser(db *sql.DB, user User) (err error) {
 
 func GetUser(db *sql.DB, email string) (User, error) {
 	sqlStatement := `
-	SELECT * FROM $1 WHERE
-	email = $1;`
-	row := db.QueryRow(sqlStatement, USER_TABLE_NAME, email)
+	SELECT * FROM users WHERE email = $1;`
+	row := db.QueryRow(sqlStatement, email)
 	var user User
-	switch err := row.Scan(&user.Id, &user.Name, &user.Age); err {
+	switch err := row.Scan(&user.Id, &user.Name, &user.Age, &user.Email); err {
 	case nil:
 		return user, nil
 	default:
