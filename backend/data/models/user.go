@@ -28,22 +28,20 @@ func InsertUser(db *sql.DB, user User) (err error) {
 
 func UpdateUser(db *sql.DB, user User) (err error) {
 	sqlStatement := `
-	UPDATE $1 SET
+	UPDATE users SET
 	name = $1,
 	age = $2,
-	email = $3,
+	email = $3
 	WHERE id = $4;`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email, user.Id)
+	_, err = db.Exec(sqlStatement, user.Name, user.Age, user.Email, user.Id)
 	return err
 }
 
-func DeleteUser(db *sql.DB, user User) (err error) {
+func DeleteUser(db *sql.DB, email string) (err error) {
 	sqlStatement := `
-	DELETE FROM $1 WHERE
-	name = $1 AND
-	age = $1 AND
-	email = $3;`
-	_, err = db.Exec(sqlStatement, USER_TABLE_NAME, user.Name, user.Age, user.Email)
+	DELETE FROM users WHERE
+	email = $1;`
+	_, err = db.Exec(sqlStatement, email)
 	return err
 }
 
