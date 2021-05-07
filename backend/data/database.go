@@ -63,6 +63,6 @@ func initializeDatabase() *sql.DB {
 
 func initializeTables(db *sql.DB) (err error) {
 
-	_, err = db.Exec(models.INITIALIZE_USER_TABLE_QUERY)
+	_, err = db.Exec(models.INITIALIZE_RECIPE_TABLE_QUERY)
 	return
 }

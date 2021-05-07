@@ -16,51 +16,54 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello!")
 }
 
-func addUserHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Adding a user...\n")
+func addRecipeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Adding a recipe...\n")
 	database := data.GetDatabaseSingleton()
-	testUser := models.User{Name: "test_name", Age: 1, Email: "test@mail.com"}
-	models.InsertUser(database.Db, testUser)
+	testRecipe := models.Recipe{Name: "test_name", Rating: 0}
+	models.InsertRecipe(database.Db, testRecipe)
 }
 
-func getUserHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Getting a user...\n")
+func getRecipesHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Getting a recipe...\n")
 	database := data.GetDatabaseSingleton()
-	storedUser, err := models.GetUser(database.Db, "test@mail.com")
+	recipes, err := models.GetRecipes(database.Db, "test_name")
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Fprintf(w, "Got a user with id: %v, name: %v, age: %v, and email: %v",
-		storedUser.Id, storedUser.Name, storedUser.Age, storedUser.Email)
+	fmt.Fprintf(w, "Got %v recipes.", len(recipes))
+	for _, recipe := range recipes {
+		fmt.Fprintf(w, "Got a recipe with id: %v, name: %v, and rating: %v",
+			recipe.Id, recipe.Name, recipe.Rating)
+	}
 }
 
-func updateUserHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Updating a user...\n")
+func updateRecipeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Updating a recipe...\n")
 	database := data.GetDatabaseSingleton()
-	newUser := models.User{Id: "1", Name: "updatedName", Age: 10, Email: "Updated@mail.com"}
-	err := models.UpdateUser(database.Db, newUser)
+	newRecipe := models.Recipe{Id: "1", Name: "updatedRecipename", Rating: 5}
+	err := models.UpdateRecipe(database.Db, newRecipe)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Delete a user...\n")
+func deleteRecipeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Delete a recipe...\n")
 	database := data.GetDatabaseSingleton()
-	err := models.DeleteUser(database.Db, "Updated@mail.com")
+	err := models.DeleteRecipe(database.Db /*id=*/, "1")
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Fprintf(w, "Deleted a user with email: %v", "Updated@mail.com")
+	fmt.Fprintf(w, "Deleted a recipe with id: %v", "1")
 }
 
 func main() {
 	http.HandleFunc("/", exampleHandler)
 	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/addUser", addUserHandler)
-	http.HandleFunc("/getUser", getUserHandler)
-	http.HandleFunc("/updateUser", updateUserHandler)
-	http.HandleFunc("/deleteUser", deleteUserHandler)
+	http.HandleFunc("/addUser", addRecipeHandler)
+	http.HandleFunc("/getUser", getRecipesHandler)
+	http.HandleFunc("/updateUser", updateRecipeHandler)
+	http.HandleFunc("/deleteUser", deleteRecipeHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }
