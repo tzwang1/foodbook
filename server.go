@@ -60,10 +60,10 @@ func deleteRecipeHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", exampleHandler)
 	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/addUser", addRecipeHandler)
-	http.HandleFunc("/getUser", getRecipesHandler)
-	http.HandleFunc("/updateUser", updateRecipeHandler)
-	http.HandleFunc("/deleteUser", deleteRecipeHandler)
+	http.HandleFunc("/addRecipe", addRecipeHandler)
+	http.HandleFunc("/getRecipes", getRecipesHandler)
+	http.HandleFunc("/updateRecipe", updateRecipeHandler)
+	http.HandleFunc("/deleteRecipe", deleteRecipeHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }
