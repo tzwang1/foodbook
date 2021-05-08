@@ -28,7 +28,7 @@ func UpdateRecipe(db *sql.DB, recipe Recipe) (err error) {
 	sqlStatement := `
 	UPDATE recipes SET
 	name = $1,
-	rating = $2,
+	rating = $2
 	WHERE id = $3;`
 	_, err = db.Exec(sqlStatement, recipe.Name, recipe.Rating, recipe.Id)
 	return err
