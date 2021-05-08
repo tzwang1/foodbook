@@ -62,7 +62,14 @@ func initializeDatabase() *sql.DB {
 }
 
 func initializeTables(db *sql.DB) (err error) {
+	initialization_queries := []string{models.INITIALIZE_RECIPE_TABLE_QUERY,
+		models.INITIALIZE_INSTRUCTION_TABLE_QUERY}
 
-	_, err = db.Exec(models.INITIALIZE_RECIPE_TABLE_QUERY)
+	for _, initialize_query := range initialization_queries {
+		_, err = db.Exec(initialize_query)
+		if err != nil {
+			return
+		}
+	}
 	return
 }
