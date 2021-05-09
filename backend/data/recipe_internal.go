@@ -10,10 +10,12 @@ type RecipeInternal struct {
 	Instructions []string `json:"instructions"`
 }
 
+var RECIPE_PATH = "./configs/recipes/"
+
 func readRecipes(recipeFileNames []string) ([]RecipeInternal, error) {
 	var recipes []RecipeInternal
 	for _, recipeFileName := range recipeFileNames {
-		recipeStr, err := ioutil.ReadFile(recipeFileName)
+		recipeStr, err := ioutil.ReadFile(RECIPE_PATH + recipeFileName)
 		if err != nil {
 			return recipes, err
 		}
