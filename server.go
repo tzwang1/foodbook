@@ -1,9 +1,9 @@
 package main
 
 import (
-	"example_app/backend/data"
-	"example_app/backend/data/models"
 	"fmt"
+	"foodbook/backend/data"
+	"foodbook/backend/data/models"
 	"log"
 	"net/http"
 )

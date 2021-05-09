@@ -2,8 +2,8 @@ package data
 
 import (
 	"database/sql"
-	"example_app/backend/data/models"
 	"fmt"
+	"foodbook/backend/data/models"
 	"log"
 	"os"
 	"time"
