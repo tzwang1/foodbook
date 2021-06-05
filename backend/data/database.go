@@ -71,5 +71,5 @@ func initializeTables(db *sql.DB) (err error) {
 			return
 		}
 	}
-	return
+	return InitializeRecipes()
 }

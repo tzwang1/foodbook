@@ -42,10 +42,10 @@ func DeleteRecipe(db *sql.DB, id string) (err error) {
 	return err
 }
 
-func GetRecipe(db *sql.DB, id string) (Recipe, error) {
+func GetRecipe(db *sql.DB, name string) (Recipe, error) {
 	sqlStatement := `
-	SELECT * FROM recipes WHERE id = $1;`
-	row := db.QueryRow(sqlStatement, id)
+	SELECT * FROM recipes WHERE name = $1;`
+	row := db.QueryRow(sqlStatement, name)
 	var recipe Recipe
 	switch err := row.Scan(&recipe.Id, &recipe.Name, &recipe.Rating); err {
 	case nil:
