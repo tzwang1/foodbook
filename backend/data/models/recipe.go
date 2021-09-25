@@ -14,7 +14,7 @@ const RECIPE_TABLE_NAME = "recipes"
 
 const INITIALIZE_RECIPE_TABLE_QUERY = `
 	CREATE TABLE IF NOT EXISTS ` + RECIPE_TABLE_NAME + ` (
-	id serial PRIMARY KEY,
+	id text PRIMARY KEY,
 	name text NOT NULL,
 	rating integer)`
 
@@ -42,10 +42,10 @@ func DeleteRecipe(db *sql.DB, id string) (err error) {
 	return err
 }
 
-func GetRecipe(db *sql.DB, name string) (Recipe, error) {
+func GetRecipe(db *sql.DB, id string) (Recipe, error) {
 	sqlStatement := `
-	SELECT * FROM recipes WHERE name = $1;`
-	row := db.QueryRow(sqlStatement, name)
+	SELECT * FROM recipes WHERE id = $1;`
+	row := db.QueryRow(sqlStatement, id)
 	var recipe Recipe
 	switch err := row.Scan(&recipe.Id, &recipe.Name, &recipe.Rating); err {
 	case nil:
