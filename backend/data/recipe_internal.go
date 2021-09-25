@@ -6,6 +6,8 @@ import (
 	"foodbook/backend/data/models"
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 )
 
 type RecipeInternal struct {
@@ -13,7 +15,7 @@ type RecipeInternal struct {
 	Instructions []string `json:"instructions"`
 }
 
-var RECIPE_PATH = "./configs/recipes/"
+var RECIPE_PATH = "configs/recipes/"
 
 func readRecipes(recipeFileNames []string) ([]RecipeInternal, error) {
 	var recipes []RecipeInternal
@@ -95,13 +97,20 @@ func InsertOrUpdateRecipes(recipes []RecipeInternal) error {
 }
 
 func InitializeRecipes() error {
-	recipeFiles, err := ioutil.ReadDir(RECIPE_PATH)
+	pwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	log.Println("Recipe path: ", filepath.Join(pwd, RECIPE_PATH))
+	recipeFiles, err := ioutil.ReadDir(filepath.Join(pwd, RECIPE_PATH))
 	if err != nil {
 		return err
 	}
 	recipeFileNames := []string{}
+	log.Println("recipe files length: ", len(recipeFiles))
 	for _, recipeFile := range recipeFiles {
 		recipeFileNames = append(recipeFileNames, recipeFile.Name())
+		log.Println("Recipe file name: ", recipeFile.Name())
 	}
 	recipes, err := readRecipes(recipeFileNames)
 	if err != nil {

@@ -65,5 +65,4 @@ func main() {
 	http.HandleFunc("/updateRecipe", updateRecipeHandler)
 	http.HandleFunc("/deleteRecipe", deleteRecipeHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
-
 }

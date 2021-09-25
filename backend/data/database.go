@@ -57,7 +57,10 @@ func initializeDatabase() *sql.DB {
 	}
 	log.Println("Successfully connected!")
 	log.Println("Initializing Tables...")
-	initializeTables(db)
+	err = initializeTables(db)
+	if err != nil {
+		log.Fatalf("Failed to initialize database tables with error: %v\n", err)
+	}
 	return db
 }
 

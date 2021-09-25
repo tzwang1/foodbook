@@ -14,9 +14,9 @@ const INSTRUCTION_TABLE_NAME = "instructions"
 const INITIALIZE_INSTRUCTION_TABLE_QUERY = `
 	CREATE TABLE IF NOT EXISTS ` + INSTRUCTION_TABLE_NAME + ` (
 	id serial PRIMARY KEY,
-	recipeId text NOT NULL,
+	recipeId integer NOT NULL,
 	number integer,
-	text integer
+	text integer,
 	CONSTRAINT fk_recipe
       FOREIGN KEY(recipeId) 
 	  REFERENCES recipes(id)
