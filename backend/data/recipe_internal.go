@@ -71,27 +71,24 @@ func MaybeUpdateExistingRecipeInstructions(db *sql.DB, existing_recipe models.Re
 	return nil
 }
 
-func InsertOrUpdateRecipes(recipes []RecipeInternal) error {
+func InsertOrUpdateRecipe(recipe RecipeInternal) error {
 	db := GetDatabaseSingleton().Db
-	for _, recipe := range recipes {
-		existing_recipe, err := models.GetRecipe(db, recipe.Name)
-		if err != nil {
-			if err == sql.ErrNoRows {
-				err = InsertNewRecipeInstructions(db, recipe)
-				if err != nil {
-					return err
-				}
-			} else {
-				log.Printf("Got error: %v when getting recipe: %v\n", err, recipe.Name)
-				return err
-			}
-		} else {
-			err = MaybeUpdateExistingRecipeInstructions(db, existing_recipe, recipe)
+	existing_recipe, err := models.GetRecipe(db, recipe.Name)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = InsertNewRecipeInstructions(db, recipe)
 			if err != nil {
 				return err
 			}
+		} else {
+			log.Printf("Got error: %v when getting recipe: %v\n", err, recipe.Name)
+			return err
 		}
-
+	} else {
+		err = MaybeUpdateExistingRecipeInstructions(db, existing_recipe, recipe)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -116,5 +113,11 @@ func InitializeRecipes() error {
 	if err != nil {
 		return err
 	}
-	return InsertOrUpdateRecipes(recipes)
+	for _, recipe := range recipes {
+		err := InsertOrUpdateRecipe(recipe)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
