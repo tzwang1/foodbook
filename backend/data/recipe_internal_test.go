@@ -4,7 +4,7 @@ import "testing"
 
 func TestReadRecipes(t *testing.T) {
 	recipeFileNames := []string{"testrecipe.json"}
-	recipes, err := readRecipes(recipeFileNames)
+	recipes, err := readRecipesFromConfigs(recipeFileNames)
 	if err != nil {
 		t.Errorf("Got an unexpected error: %v\n", err)
 	}

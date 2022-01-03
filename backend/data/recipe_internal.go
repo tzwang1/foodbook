@@ -17,7 +17,7 @@ type RecipeInternal struct {
 
 var RECIPE_PATH = "configs/recipes/"
 
-func readRecipes(recipeFileNames []string) ([]RecipeInternal, error) {
+func readRecipesFromConfigs(recipeFileNames []string) ([]RecipeInternal, error) {
 	var recipes []RecipeInternal
 	for _, recipeFileName := range recipeFileNames {
 		recipeStr, err := ioutil.ReadFile(RECIPE_PATH + recipeFileName)
@@ -112,7 +112,7 @@ func InitializeRecipes() error {
 		recipeFileNames = append(recipeFileNames, recipeFile.Name())
 		log.Println("Recipe file name: ", recipeFile.Name())
 	}
-	recipes, err := readRecipes(recipeFileNames)
+	recipes, err := readRecipesFromConfigs(recipeFileNames)
 	if err != nil {
 		return err
 	}
