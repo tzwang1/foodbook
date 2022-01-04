@@ -11,6 +11,7 @@ import (
 )
 
 type RecipeInternal struct {
+	Id           string   `json:"id"`
 	Name         string   `json:"name"`
 	Instructions []string `json:"instructions"`
 }
@@ -36,7 +37,7 @@ func InsertNewRecipeInstructions(db *sql.DB, recipe RecipeInternal) error {
 	if err != nil {
 		return err
 	}
-	stored_recipe, err := models.GetRecipe(db, recipe.Name)
+	stored_recipe, err := models.GetRecipe(db, recipe.Id)
 	if err != nil {
 		return err
 	}

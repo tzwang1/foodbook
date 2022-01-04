@@ -11,6 +11,9 @@ func TestReadRecipes(t *testing.T) {
 	if len(recipes) != 1 {
 		t.Errorf("Got an unexpected number of recipes: %v\n", len(recipes))
 	}
+	if recipes[0].Id != "test_recipe_id1" {
+		t.Errorf("Got an unexpected recipe name: %v\n", recipes[0].Id)
+	}
 	if recipes[0].Name != "testName" {
 		t.Errorf("Got an unexpected recipe name: %v\n", recipes[0].Name)
 	}
