@@ -64,5 +64,8 @@ func main() {
 	http.HandleFunc("/getRecipes", getRecipesHandler)
 	http.HandleFunc("/updateRecipe", updateRecipeHandler)
 	http.HandleFunc("/deleteRecipe", deleteRecipeHandler)
+
+	data.InitializeDatabase()
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

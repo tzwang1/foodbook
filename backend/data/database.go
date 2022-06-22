@@ -25,12 +25,12 @@ var instance *Database
 
 func GetDatabaseSingleton() *Database {
 	if instance == nil {
-		instance = &Database{Db: initializeDatabase()}
+		instance = &Database{Db: InitializeDatabase()}
 	}
 	return instance
 }
 
-func initializeDatabase() *sql.DB {
+func InitializeDatabase() *sql.DB {
 	connected := false
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -74,5 +74,6 @@ func initializeTables(db *sql.DB) (err error) {
 			return
 		}
 	}
-	return InitializeRecipes()
+	// return InitializeRecipes()
+	return nil
 }
